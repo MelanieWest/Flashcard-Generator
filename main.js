@@ -13,10 +13,12 @@ questions();        //first call here
 function questions(){   //this is recursive.  Only needs one call.
     count ++;
     console.log("questions has been called");
-    
+
+    //ask the questions and score answers. Then call function again.
+
+
     if (count < 5){     //reset the # for how many questions
         console.log("The count is: "+count+'\n');
-        //ask the questions and score answers. Then call function again.
         questions();
     }
 
