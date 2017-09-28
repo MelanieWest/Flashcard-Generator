@@ -42,14 +42,14 @@ function basicCardReview(){
 
 function basicQuestions(){   //this is recursive.  Only needs one call.
     
-console.log("questions has been called");
+console.log("questions has been called\n");
 
 //ask the questions and score answers. Then call function again.
 inquirer
 .prompt ([
     {         
         type: "list",
-        message: card[count].front,
+        message: "Front of flashcard:\n "+card[count].front+"\n",
         choices: card[count].choices,
         name: "answer"
     }
@@ -58,6 +58,9 @@ inquirer
     if(error){
         throw error;
     };
+
+    //write out the back of the card
+    console.log("Back of flashcard; "+ card[count].back);
 
     if(response.answer == card[count].back){correct ++;}
     count ++;
@@ -85,7 +88,7 @@ clozeCardCreate();   // create question cards for cloze
 
 function clozeQuestions(){   //this is recursive.  Only needs one call.
 
-    console.log("questions has been called");
+    console.log("(Capitalize any planet names)\n");
 
     //ask the questions and score answers. Then call function again.
     inquirer
@@ -93,7 +96,7 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
 
         {
             type: "input",
-            message: "Finish this message: "+ card[count].partial(),
+            message: "Finish this message:\n "+ card[count].partial()+"\n",
             name: "answer"
         }
 
@@ -104,6 +107,9 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
         if(error){
             throw error;
         };
+
+        //write out the correct answer
+        console.log("Completed text: "+card[count].text);
 
         if(response.answer == card[count].cloze){correct ++;}
         count ++;
