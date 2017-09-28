@@ -1,25 +1,130 @@
 var fs = require("fs");
 var inquirer = require("inquirer");
 
-var basic = require("./BasicCard.js");
-var cloze = require("./ClozeCard.js");
+var BasicCard = require("./BasicCard.js");
+var ClozeCard = require("./ClozeCard.js");
 var count = 0;
+var correct = 0;
+var answer;
+var card = [];
+var partial = [];
 
-//call the questions function as long as the count is below
-// a specified number (for now, set to 5);
 
-questions();        //first call here
+inquirer.prompt(
+{
+    type: "list",
+    message: "Which review method do you prefer?",
+    choices: ["cloze","basic"],
+    name: "whichCard",
+}
+).then(function(response){
+    if(response.whichCard == 'basic'){
+        basicCardReview();
+    }else{
+        clozeCardReview();
+    }
 
-function questions(){   //this is recursive.  Only needs one call.
+})  //end of prompt for card choice
+
+function basicCardReview(){
+    BasicCard.choices = ["Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"];
+    //console.log(BasicCard.choices); 
+    basicCardCreate();   //create the question cards
+    basicQuestions();   //ask questions
+
+}
+
+
+function basicQuestions(){   //this is recursive.  Only needs one call.
+    
+console.log("questions has been called");
+
+//ask the questions and score answers. Then call function again.
+inquirer
+.prompt ([
+    {         
+        type: "list",
+        message: card[count].front,
+        choices: card[count].choices,
+        name: "answer"
+    }
+
+]).then(function(response,error){
+    if(error){
+        throw error;
+    };
+
+    if(response.answer == card[count].back){correct ++;}
     count ++;
+    
+    if (count < card.length){     //reset the # for how many questions
+        console.log("The count is: "+count+'\n');
+        console.log("You have "+correct + " correct answers");
+        basicQuestions();
+    }
+
+});  // end of then
+   
+}       //end of basicQuestion function
+
+
+
+
+function clozeCardReview(){
+  clozeCardCreate();
+  clozeQuestions();
+};
+
+clozeCardCreate();   // create question cards for cloze
+
+
+function clozeQuestions(){   //this is recursive.  Only needs one call.
+
     console.log("questions has been called");
 
     //ask the questions and score answers. Then call function again.
+    inquirer
+    .prompt (
+
+        {
+            name: 'answer',
+            message: card[count].text
+        }
+ 
+
+    ).then(function(response, error){
+
+        if(error){
+            throw error;
+        };
+
+        if(response.answer == card[count].cloze){correct ++;}
+        count ++;
+        
+        if (count < 2){     //reset the # for how many questions
+            console.log("The count is: "+count+'\n');
+            console.log("You have "+correct + " correct answers");            
+            clozeQuestions();
+        }
+
+    });  // end of then
 
 
-    if (count < 5){     //reset the # for how many questions
-        console.log("The count is: "+count+'\n');
-        questions();
-    }
+}       //end of question function
 
+function basicCardCreate(){
+
+
+    card[0] = new BasicCard("Which planet do you live on?","Earth");
+    card[1] = new BasicCard("Which planet isn't a planet anymore?","Pluto")
+    card[2] = new BasicCard("Which planet has rings?","Saturn")
+    card[3] = new BasicCard("Which planet is the largest in our solar system?","Jupiter")
+    card[4] = new BasicCard("Which planet is named for a mythical Sea God?","Neptune")
+
+
+}       //end of basic card create function
+
+function clozeCardCreate(){
+    card[0] = new ClozeCard("Most of earth's energy comes from the sun","the sun");
+    card[1] = new ClozeCard("Planets discovered outside our solar system are called exoplanets","exoplanets");
 }
