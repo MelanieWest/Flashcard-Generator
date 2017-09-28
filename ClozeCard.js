@@ -12,7 +12,11 @@ var ClozeCard =function(text,cloze){
     }
 
 //create partial text 
-    // this.partial = function(){
+     this.partial = function(){
+
+        var partText = this.text;
+        partText = partText.replace(this.cloze,"...");
+
     //     var clozeIndex = this.text.indexOf(this.cloze)     
     //     var clozeLen   = this.cloze.length; 
     //     var partText   = this.text;
@@ -22,8 +26,9 @@ var ClozeCard =function(text,cloze){
     //     //create partial text here
     //     partText.splice(clozeIndex,clozeLen,'...');
     
-    //     console.log("Finish this statement: "+partText);
-    // }
+         return partText;
+         //console.log("Finish this statement: "+partText);
+     }
     
 }
 

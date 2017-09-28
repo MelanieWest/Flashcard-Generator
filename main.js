@@ -1,14 +1,14 @@
-var fs = require("fs");
-var inquirer = require("inquirer");
+const fs = require("fs");
+const inquirer = require("inquirer");
 
-var BasicCard = require("./BasicCard.js");
-var ClozeCard = require("./ClozeCard.js");
+const BasicCard = require("./BasicCard.js");
+const ClozeCard = require("./ClozeCard.js");
+
 var count = 0;
 var correct = 0;
 var answer;
 var card = [];
 var partial = [];
-
 
 inquirer.prompt(
 {
@@ -18,9 +18,14 @@ inquirer.prompt(
     name: "whichCard",
 }
 ).then(function(response){
+    console.log('then function');
+
+
     if(response.whichCard == 'basic'){
+        console.log('\n');
         basicCardReview();
     }else{
+        console.log('\n');
         clozeCardReview();
     }
 
@@ -84,15 +89,17 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
 
     //ask the questions and score answers. Then call function again.
     inquirer
-    .prompt (
+    .prompt ([
 
         {
-            name: 'answer',
-            message: card[count].text
+            type: "input",
+            message: "Finish this message: "+ card[count].partial(),
+            name: "answer"
         }
+
  
 
-    ).then(function(response, error){
+   ]).then(function(response,error){
 
         if(error){
             throw error;
@@ -103,17 +110,16 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
         
         if (count < 2){     //reset the # for how many questions
             console.log("The count is: "+count+'\n');
-            console.log("You have "+correct + " correct answers");            
+            console.log("You have "+correct + " correct answers\n");            
             clozeQuestions();
         }
-
-    });  // end of then
+ 
+    });           //end 'then'
 
 
 }       //end of question function
 
 function basicCardCreate(){
-
 
     card[0] = new BasicCard("Which planet do you live on?","Earth");
     card[1] = new BasicCard("Which planet isn't a planet anymore?","Pluto")
@@ -121,10 +127,10 @@ function basicCardCreate(){
     card[3] = new BasicCard("Which planet is the largest in our solar system?","Jupiter")
     card[4] = new BasicCard("Which planet is named for a mythical Sea God?","Neptune")
 
-
 }       //end of basic card create function
 
 function clozeCardCreate(){
     card[0] = new ClozeCard("Most of earth's energy comes from the sun","the sun");
     card[1] = new ClozeCard("Planets discovered outside our solar system are called exoplanets","exoplanets");
-}
+
+}       //end of cloze card create function
