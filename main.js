@@ -108,7 +108,7 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
         if(response.answer == card[count].cloze){correct ++;}
         count ++;
         
-        if (count < 2){     //reset the # for how many questions
+        if (count < card.length){     //reset the # for how many questions
             console.log("The count is: "+count+'\n');
             console.log("You have "+correct + " correct answers\n");            
             clozeQuestions();
@@ -132,5 +132,8 @@ function basicCardCreate(){
 function clozeCardCreate(){
     card[0] = new ClozeCard("Most of earth's energy comes from the sun","the sun");
     card[1] = new ClozeCard("Planets discovered outside our solar system are called exoplanets","exoplanets");
+    card[2] = new ClozeCard("For the planet Mercury, one day is the same as one year","Mercury");
+    card[3] = new ClozeCard("Jupiter has more moons than any other planet in our solar system","Jupiter");
+    card[4] = new ClozeCard("The planet Venus rotates in the opposite direction from all the other planets","Venus");
 
 }       //end of cloze card create function
