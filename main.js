@@ -1,5 +1,6 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const jsonfile = require("jsonfile");
 
 const BasicCard = require("./BasicCard.js");
 const ClozeCard = require("./ClozeCard.js");
@@ -133,6 +134,20 @@ function basicCardCreate(){
     card[3] = new BasicCard("Which planet is the largest in our solar system?","Jupiter")
     card[4] = new BasicCard("Which planet is named for a mythical Sea God?","Neptune")
 
+  
+    for(var j=0; j<card.length; j++){
+        var file = 'basicCards.json'
+        var obj = JSON.stringify(card[j])+'\n';
+
+         //this was used without stringify
+        // jsonfile.writeFile(file, obj+'\n', {flag: 'a'}, function (err) {
+        //   console.error(err)
+        // });
+        fs.appendFile(file, obj, (err) => {
+            if (err) throw err;
+        });
+    }
+
 }       //end of basic card create function
 
 function clozeCardCreate(){
@@ -142,4 +157,18 @@ function clozeCardCreate(){
     card[3] = new ClozeCard("Jupiter has more moons than any other planet in our solar system","Jupiter");
     card[4] = new ClozeCard("The planet Venus rotates in the opposite direction from all the other planets","Venus");
 
+     
+    for(var j=0; j<card.length; j++){
+        var file = 'clozeCards.json'
+        var obj = JSON.stringify(card[j])+'\n';
+
+        //this was used without stringify
+        // jsonfile.writeFile(file, obj+'\n', {flag: 'a'}, function (err) {
+        //   console.error(err)
+        // });
+
+        fs.appendFile(file, obj, (err) => {
+            if (err) throw err;
+        });
+    }
 }       //end of cloze card create function
