@@ -137,12 +137,8 @@ function basicCardCreate(){
   
     for(var j=0; j<card.length; j++){
         var file = 'basicCards.json'
-        var obj = JSON.stringify(card[j])+'\n';
+        var obj = JSON.stringify(card[j])+',\n';
 
-         //this was used without stringify
-        // jsonfile.writeFile(file, obj+'\n', {flag: 'a'}, function (err) {
-        //   console.error(err)
-        // });
         fs.appendFile(file, obj, (err) => {
             if (err) throw err;
         });
@@ -160,12 +156,7 @@ function clozeCardCreate(){
      
     for(var j=0; j<card.length; j++){
         var file = 'clozeCards.json'
-        var obj = JSON.stringify(card[j])+'\n';
-
-        //this was used without stringify
-        // jsonfile.writeFile(file, obj+'\n', {flag: 'a'}, function (err) {
-        //   console.error(err)
-        // });
+        var obj = JSON.stringify(card[j])+',\n';
 
         fs.appendFile(file, obj, (err) => {
             if (err) throw err;
