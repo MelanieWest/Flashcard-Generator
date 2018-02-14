@@ -1,6 +1,7 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const jsonfile = require("jsonfile");
+const colors = require("colors");
 
 const BasicCard = require("./BasicCard.js");
 const ClozeCard = require("./ClozeCard.js");
@@ -19,7 +20,7 @@ inquirer.prompt(
     name: "whichCard",
 }
 ).then(function(response){
-    console.log('then function');
+    //console.log('then function');
 
 
     if(response.whichCard == 'basic'){
@@ -43,7 +44,7 @@ function basicCardReview(){
 
 function basicQuestions(){   //this is recursive.  Only needs one call.
     
-console.log("questions has been called\n");
+//console.log("questions has been called\n");
 
 //ask the questions and score answers. Then call function again.
 inquirer
@@ -61,15 +62,19 @@ inquirer
     };
 
     //write out the back of the card
-    console.log("Back of flashcard; "+ card[count].back);
+    console.log("Back of flashcard: "+ card[count].back);
 
     if(response.answer == card[count].back){correct ++;}
     count ++;
     
     if (count < card.length){     //reset the # for how many questions
         console.log("The count is: "+count+'\n');
-        console.log("You have "+correct + " correct answers");
+        console.log('You have %s correct answers'.inverse,correct,'\n');
         basicQuestions();
+    }
+    else if(count === card.length){
+        console.log(' You have %s correct answers '.inverse,correct,'\n');            
+        console.log("Good game!");
     }
 
 });  // end of then
@@ -117,8 +122,11 @@ function clozeQuestions(){   //this is recursive.  Only needs one call.
         
         if (count < card.length){     //reset the # for how many questions
             console.log("The count is: "+count+'\n');
-            console.log("You have "+correct + " correct answers\n");            
+            console.log(' You have %s correct answers '.inverse,correct,'\n');            
             clozeQuestions();
+        }else if(count === card.length){
+            console.log(' You have %s correct answers '.inverse,correct,'\n');            
+            console.log("Good game!");
         }
  
     });           //end 'then'
@@ -139,6 +147,7 @@ function basicCardCreate(){
         var file = 'basicCards.json'
         var obj = JSON.stringify(card[j])+',\n';
 
+        
         fs.appendFile(file, obj, (err) => {
             if (err) throw err;
         });
